@@ -13,7 +13,7 @@ sap.ui.define([
 ], function (BaseController, jQuery, History, Title, JSONModel, FlattenedDataset, FeedItem, Popover, VizFrame, ChartFormatter, Format) {
     "use strict";
     return BaseController.extend("Wstat.controller.Filter", {
-        delaySearch: null, 
+        delaySearch: null,
         //dataPath : "https://sapui5.hana.ondemand.com/test-resources/sap/viz/demokit/dataset/milk_production_testing_data/date_cost",
         value: {
             text: "Days Chart",
@@ -153,7 +153,7 @@ sap.ui.define([
         onChange: function (oEvent) {
             var that = this;
             clearTimeout(this.delaySearch);
-            this.delaySearch = setTimeout(function() {
+            this.delaySearch = setTimeout(function () {
                 //that.filter(false);
             }, 1);
         },
@@ -166,7 +166,7 @@ sap.ui.define([
             oModelPars.setData(DataNew);
             for (var i = 0; i < Data.stats.length; i++) {
                 var filter = DataNew.filter.split(" ");
-                var objEmph =  {
+                var objEmph = {
                     DATE: Data.stats[i].DATE,
                     note: Data.stats[i].note
                 };
@@ -188,7 +188,7 @@ sap.ui.define([
             var found = true;
             for (var i = 0; i < filter.length; i++) {
                 var lowFilter = filter[i].toLowerCase();
-                emph.note = emph.note.replace(filter[i],"<strong><span style='background-color: yellow;'>"+filter[i]+"</span></strong>");
+                emph.note = emph.note.replace(filter[i], "<strong><span style='background-color: yellow;'>" + filter[i] + "</span></strong>");
                 if (string.indexOf(lowFilter) == -1) {
                     found = false;
                 }
