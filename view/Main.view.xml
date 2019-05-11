@@ -1,0 +1,64 @@
+<mvc:View controllerName="Wstat.controller.Main" 
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:mvc="sap.ui.core.mvc" displayBlock="true" 
+	xmlns="sap.m" 
+	xmlns:l="sap.ui.layout" 
+	xmlns:u="sap.ui.unified" 
+	xmlns:core="sap.ui.core" 
+	xmlns:rte="sap.ui.richtexteditor">
+	<Page title="{i18n>title} {global>/wstat/header/account}">
+		<headerContent>
+			<Text text="{global>/wstat/header/info}" class="myTitle" />
+			<Button icon="sap-icon://log" tooltip="LogOut" press="logOut" />
+		</headerContent>
+		<content>
+			<VBox alignItems="Center">
+				<l:VerticalLayout class="sapUiTinyMargin">
+					<l:content>
+						<l:HorizontalLayout></l:HorizontalLayout>
+						<u:Calendar id="calendar" startDateChange="change" firstDayOfWeek="1" months="2" select="handleCalendarSelect" intervalSelection="false"/>
+					</l:content>
+				</l:VerticalLayout>
+			</VBox>
+			<VBox alignItems="Center">
+				<l:VerticalLayout class="sapUiTinyMargin">
+					<core:HTML content="{global>/wstat/header/head}" visible="{= !${global>/wstat/header/visibles}}" preferDOM="false" />
+				</l:VerticalLayout>
+			</VBox>
+			<Table id="idStaffing" sticky="HeaderToolbar,InfoToolbar,ColumnHeaders" items="{path: 'global>/wstat/stats'}" visible="{global>/wstat/header/visibles}" itemPress="itmPress" noDataText=" ">
+				<columns>
+					<Column width="25%">
+						<Text text="Day"/>
+					</Column>
+					<!--<Column width="15%">
+						<Text text="Ore"/>
+					</Column>
+					<Column width="25%">
+						<Text text="Data"/>
+					</Column>-->
+					<Column width="75%">
+						<Text text="Note"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem visible="{global>visible}" type="Navigation">
+						<!--<customData>
+							<core:CustomData key="mystyle" value="{global>Color}" writeToDom="true"></core:CustomData>
+						</customData>-->
+						<cells>
+							<Text text="{global>ID}"/>
+							<!--<ObjectNumber number="{global>val}"/>-->
+							<core:HTML content="{global>note}" preferDOM="false" />
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</content>
+		<footer>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button icon="sap-icon://search" press="onFilter" />
+			</Toolbar>
+		</footer>
+	</Page>
+</mvc:View>

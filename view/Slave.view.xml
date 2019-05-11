@@ -1,0 +1,19 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" 
+	xmlns:l="sap.ui.layout" 
+	xmlns:rte="sap.ui.richtexteditor" 
+	xmlns:code="sap.ui.codeeditor" 
+	xmlns="sap.m" 
+	xmlns:core="sap.ui.core" controllerName="Wstat.controller.Slave">
+	<Page title="{i18n>title} {global>/detailRTF/DATE}" showNavButton="true" navButtonPress="onBack">
+		<headerContent>
+			<Text text="{global>/saved}" class="myTitle" />
+			<Button icon="sap-icon://syntax" visible="{=${global>/code}}" tooltip="Beautify" press="beutify" />
+			<ToggleButton pressed="{path:'global>/code'}" icon="sap-icon://source-code" tooltip="Code" press="onCode" />
+			<Button icon="sap-icon://delete" tooltip="Delete" press="onDelete" />
+		</headerContent>
+		<l:VerticalLayout visible="{=!${global>/code}}" id="idVerticalLayout" class="sapUiContentPadding" width="100%"></l:VerticalLayout>
+		<l:VerticalLayout visible="{=${global>/code}}" id="idCode" class="sapUiContentPadding" width="100%">
+			<code:CodeEditor value="{global>/detailRTF/note}" height="550px" colorTheme="default" type="html"/>
+		</l:VerticalLayout>
+	</Page>
+</mvc:View>

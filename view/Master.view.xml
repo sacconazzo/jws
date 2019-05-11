@@ -1,0 +1,113 @@
+<mvc:View xmlns:core="sap.ui.core" 
+	xmlns:mvc="sap.ui.core.mvc" 
+	xmlns="sap.m" 
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<html:style>
+.myTitle {
+	color:#666666;
+}    
+.sapMIBar.sapMHeader-CTX {
+	background-color: #ffffff;
+}
+.sapContrast.sapMIBar.sapMFooter-CTX {
+	background-color: #f0f0f0;
+	border-top: 1px solid #d1e0ee;
+}
+html.sap-desktop .sapContrast.sapMIBar.sapMFooter-CTX {
+	background-color: #f0f0f0;
+	border-top: 1px solid #d1e0ee;
+}
+.sapContrast .sapMBtnIcon {
+	color: #346187;
+}
+.sapMShellBrandingBar {
+    height: 0px;
+}
+.sapMPageHeader::before {
+    border-top-width: 0rem;
+}
+/* * * * * * * * * * * * * * * * * * * * * * * * * */ tr[data-mystyle="F79F1F00"] {
+    background: #ffee80DD!important;
+   /* HOLIDAYS */ } tr[data-mystyle="F79F1F00"] .sapMText, tr[data-mystyle="F79F1F00"] .sapMLabel {
+    color: #000;
+}
+.sapUiCalDayType08>.sapUiCalDayNum {
+	box-shadow: inset 0 -0.4rem 0 #e6bd00;
+}
+.sapUiCalDayType08.sapUiCalDaySel>.sapUiCalDayNum {
+	box-shadow: inset 0 -0.4rem 0 #e6bd00;
+	border: 0.05rem solid #e6bd00;
+}
+.sapUiCalDayType08:not(.sapUiCalDayOtherMonth):not(.sapUiCalDaySel)>.sapUiCalDayNum {
+	background-color: #ffd200;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * */ tr[data-mystyle="99999900"] {
+    background: #e5e5e5DD!important;
+   /* NWD */ } tr[data-mystyle="99999900"] .sapMText, tr[data-mystyle="99999900"] .sapMLabel {
+    color: #333;
+}
+.sapUiCalDayType10>.sapUiCalDayNum {
+	box-shadow: inset 0 -0.4rem 0 #cccccc;
+}
+.sapUiCalDayType10.sapUiCalDaySel>.sapUiCalDayNum {
+	box-shadow: inset 0 -0.4rem 0 #cccccc;
+	border: 0.05rem solid #cccccc;
+}
+.sapUiCalDayType10:not(.sapUiCalDayOtherMonth):not(.sapUiCalDaySel)>.sapUiCalDayNum {
+	background-color: #e5e5e5;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * */ tr[data-mystyle="00943200"] {
+    background: #458a63DD!important;
+   /* 8 ORE */ } tr[data-mystyle="00943200"] .sapMText, tr[data-mystyle="00943200"] .sapMLabel {
+    color: #000;
+}
+.sapUiCalDayType06>.sapUiCalDayNum {
+	box-shadow: inset 0 -0.4rem 0 #00803b;
+}
+.sapUiCalDayType06.sapUiCalDaySel>.sapUiCalDayNum {
+	box-shadow: inset 0 -0.4rem 0 #00803b;
+	border: 0.05rem solid #00803b;
+}
+.sapUiCalDayType06:not(.sapUiCalDayOtherMonth):not(.sapUiCalDaySel)>.sapUiCalDayNum {
+	color: #FFF;
+	background-color: #008a3b;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * */ tr[data-mystyle="A3CB3800"] {
+    background: #6bd699DD!important;
+   /* 1-7 ORE */ } tr[data-mystyle="A3CB3800"] .sapMText, tr[data-mystyle="A3CB3800"] .sapMLabel {
+    color: #000;
+}
+.sapUiCalDayType09>.sapUiCalDayNum {
+	box-shadow: inset 0 -0.4rem 0 #00bd51;
+}
+.sapUiCalDayType09.sapUiCalDaySel>.sapUiCalDayNum {
+	box-shadow: inset 0 -0.4rem 0 #00bd51;
+	border: 0.05rem solid #00bd51;
+}
+.sapUiCalDayType09:not(.sapUiCalDayOtherMonth):not(.sapUiCalDaySel)>.sapUiCalDayNum {
+	color: #FFF;
+	background-color: #00d65c;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * */ tr[data-mystyle="EA202700"] {
+    background: #e57373DD!important;
+   /* MORE THA 8 */ } tr[data-mystyle="EA202700"] .sapMText, tr[data-mystyle="EA202700"] .sapMLabel {
+    color: #000;
+}
+.sapUiCalDayType03>.sapUiCalDayNum {
+	box-shadow: inset 0 -0.4rem 0 #cc2525;
+}
+.sapUiCalDayType03.sapUiCalDaySel>.sapUiCalDayNum {
+	box-shadow: inset 0 -0.4rem 0 #cc2525;
+	border: 0.05rem solid #cc2525;
+}
+.sapUiCalDayType03:not(.sapUiCalDayOtherMonth):not(.sapUiCalDaySel)>.sapUiCalDayNum {
+	color: #FFF;
+	background-color: #e52929;
+}
+	</html:style>
+	<App id="customApp"></App>
+</mvc:View>

@@ -1,0 +1,30 @@
+<Dialog afterClose="dialogAfterclose" beforeClose="dialogBeforeclose" 
+	xmlns="sap.m" showHeader="true">
+	<content>
+		<VBox class="sapUiTinyMargin">
+			<Table id="idDetail" items="{path: '/detail'}" itemPress="itmPress">
+				<columns>
+					<Column width="20%">
+						<Text text="Ore"/>
+					</Column>
+					<Column width="30%">
+						<Text text="Task"/>
+					</Column>
+					<Column width="50%">
+						<Text text="Note"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<ObjectNumber number="{Stunde}"/>
+							<Text text="{Task}"/>
+							<Text text="{Note}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</VBox>
+		<Button class="sapUiTinyMargin" id="btnInFragment" text="OK" press="confirm"/>
+	</content>
+</Dialog>
