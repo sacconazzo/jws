@@ -188,6 +188,9 @@ sap.ui.define([
             var found = true;
             for (var i = 0; i < filter.length; i++) {
                 var lowFilter = filter[i].toLowerCase();
+                //while (true) {
+                    //part string, find, replace (lenght lowFilter)
+                //}
                 emph.note = emph.note.replace(filter[i], "<strong><span style='background-color: yellow;'>" + filter[i] + "</span></strong>");
                 if (string.indexOf(lowFilter) == -1) {
                     found = false;
