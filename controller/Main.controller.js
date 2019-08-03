@@ -72,6 +72,7 @@ sap.ui.define([
                 } else {
                     var oModel = this.getOwnerComponent().getModel("global");
                     oModel.setProperty("/wstat", this.setVisible(oModel.getProperty("/wstat"), dDateFormatted));
+                    vStart = dDateFormatted;
                 }
                 // RG - simula doppio click
                 if ((vDateDetail) && ((this.oFormatYyyymmdd.format(vDateDetail) === this.oFormatYyyymmdd.format(dDate)))) {
