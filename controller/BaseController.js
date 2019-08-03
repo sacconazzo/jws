@@ -87,7 +87,7 @@ sap.ui.define([
 			var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
 			MessageBox.confirm(
 				Msg, {
-					onClose: function (oAction) {
+					onClose: (oAction) => {
 						if (oAction == "OK") {
 							Callback();
 						}
