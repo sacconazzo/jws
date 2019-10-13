@@ -32,7 +32,7 @@ sap.ui.define([
             oCal.removeAllSpecialDates();
             try {
                 oCal.destroy();
-            } catch (e) { }
+            } catch (e) {}
         },
         handleRouteMatched: function (oEvent) {
             jQuery.sap.delayedCall(500, this, function () {
@@ -62,12 +62,13 @@ sap.ui.define([
             oRouter.navTo("filter");
         },
         selectday: function (oCalendar) {
+            var oModel = this.getOwnerComponent().getModel("global");
             var aSelectedDates = oCalendar.getSelectedDates();
             if (aSelectedDates.length > 0) {
                 var dDate = aSelectedDates[0].getStartDate();
                 var dDateFormatted = this.oFormatYyyymmdd.format(dDate);
                 //this.focusDay(dDateFormatted);
-                if (vStart.substring(0, 7) !== dDateFormatted.substring(0, 7)) {
+                if (vStart.substring(0, 7) !== dDateFormatted.substring(0, 7) && oModel.getProperty("/online")) {
                     this.onSelect(dDateFormatted);
                 } else {
                     var oModel = this.getOwnerComponent().getModel("global");
@@ -94,9 +95,11 @@ sap.ui.define([
             oModel.setProperty("/saved");
             oModel.setProperty("/code", false);
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-            oRouter.navTo("detail", {
-                day: all.stats[index].DATE
-            });
+            if (oModel.getProperty("/online")) {
+                oRouter.navTo("detail", {
+                    day: all.stats[index].DATE
+                });
+            }
         },
         change: function (oControlEvent) {
             this.onSelect(this.oFormatYyyymmdd.format(this.byId("calendar").getStartDate()));
@@ -125,22 +128,30 @@ sap.ui.define([
             }
             oModel.setProperty("/detail", Object.assign({}, jDetail[0]));
             //Popup
-            this.onChangeDate(oModel);
+            if (oModel.getProperty("/online")) {
+                this.onChangeDate(oModel);
+            }
         },
         getWeek: function (Day) {
             return this.oFormatW.format(new Date(Day));
         },
         setVisible: function (Data, Day) {
             for (var i = 0; i < Data.stats.length; i++) {
-                Data.stats[i].visible = (this.getWeek(Day) === this.getWeek(Data.stats[i].DATE));
+                Data.stats[i].visible = Data.stats[i].active ? (this.getWeek(Day) === this.getWeek(Data.stats[i].DATE)) : false;
             }
             return Data;
+        },
+        onRefresh: function () {
+            if (vStart == undefined) {
+                vStart = this.oFormatYyyymmdd.format(new Date());
+            }
+            this.onSelect(vStart);
         },
         onSelect: function (From) {
             //sap.ui.core.BusyIndicator.show(0);
             var oTab = this.byId("idStaffing");
             oTab.setBusy(true);
-            var oRestModel = this.getView().getModel();
+            //var oRestModel = this.getView().getModel();
             var oModel = this.getOwnerComponent().getModel("global");
             //var oModel = new sap.ui.model.json.JSONModel({});
             var more = "/?fn=get-bethel-stat";
@@ -164,20 +175,31 @@ sap.ui.define([
                     });
                     if (http.status == 200) {
                         //sap.ui.core.UIArea.rerenderControl(that.byId("idStaffing"));
+                        var data = that.setVisible(that.mergeLocal(JSON.parse(http.responseText)), From);
                         oModel.setProperty("/wstat");
-                        oModel.setProperty("/wstat", that.setVisible(JSON.parse(http.responseText), From));
+                        oModel.setProperty("/wstat", data);
                         //that.getOwnerComponent().setModel(oModel, "global");
                         //oModel.setJSON(http.responseText);
                         //that.byId("idStaffing").setModel(oModel);
                         oTab.setBusy(false);
-                        that.infoCalendar(JSON.parse(http.responseText));
+                        that.infoCalendar(data);
                         vStart = From;
+                        oModel.setProperty("/online", true);
+                        that.setOffline(data);
                         //that.focusDay(vStart);
                     } else if (http.status == 400) {
                         oTab.setBusy(false);
                         oModel.setProperty("/wstat");
                         oCal.destroySpecialDates();
                         oCal.removeAllSpecialDates();
+                        vStart = From;
+                    } else if (http.status == 0) { ///offline mode
+                        oModel.setProperty("/online", false);
+                        sap.m.MessageToast.show("sei offline");
+                        oModel.setProperty("/wstat");
+                        oModel.setProperty("/wstat", that.getOffline());
+                        that.infoCalendar(oModel.getProperty("/wstat"));
+                        oTab.setBusy(false);
                         vStart = From;
                     } else {
                         oTab.setBusy(false);
@@ -191,6 +213,39 @@ sap.ui.define([
             //that.byId("idStaffing").destroyItems();
             //sap.ui.getCore().applyChanges();
             http.send(params);
+        },
+        mergeLocal: function (data) {
+            ///gestire i cancellati!!!!! con statoda servizio
+            var local = this.getOffline();
+            if (local != undefined) {
+                //data.stats = data.stats.map(x => Object.assign(x, local.stats.find(y => y.DATE == x.DATE))); //questo unisce proprietà su stessa chiave
+                data.stats = data.stats.concat(local.stats);
+                for (var i = 0; i < data.stats.length; ++i) {
+                    for (var j = i + 1; j < data.stats.length; ++j) {
+                        if (data.stats[i].DATE === data.stats[j].DATE)
+                            data.stats.splice(j--, 1);
+                    }
+                }
+                data.stats.sort((a, b) => {
+                    if (a.DATE < b.DATE) {
+                        return -1
+                    } else if (a.DATE > b.DATE) {
+                        return 1
+                    } else {
+                        return 0
+                    }
+                });
+            }
+            return data;
+        },
+        setOffline: function (data) {
+            var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
+            oStorage.get("wstat");
+            oStorage.put("wstat", data);
+        },
+        getOffline: function () {
+            var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
+            return oStorage.get("wstat");
         },
         focusDay: function (Day) {
             var oModel = this.getOwnerComponent().getModel("global");
@@ -231,30 +286,32 @@ sap.ui.define([
             for (var i = 0; i < Data.length; i++) {
                 var sType = "";
                 var sTooltip = "";
-                switch (true) {
-                    case (Data[i].val == 5): // HOLIDAYS - blu
-                        sTooltip = "5";
-                        sType = "Type08";
-                        break;
-                    case (Data[i].val >= 0 && Data[i].val <= 1): // INATTIVO - viola
-                        sType = "Type10"; // OK
-                        sTooltip = "0-1";
-                        break;
-                    case (Data[i].val >= 8 && Data[i].val <= 10): // ESATTAMENTE 8 - verde
-                        sType = "Type06"; // OK
-                        //sTooltip = Data[i].Task + " " + Data[i].Note;
-                        sTooltip = "8-10";
-                        break;
-                    case (Data[i].val >= 6 && Data[i].val <= 7): // TRA 1 - 7 - verde chiaro
-                        sTooltip = "6-7";
-                        sType = "Type09";
-                        break;
-                    case (Data[i].val >= 2 && Data[i].val <= 4): // Superiore 8 - rosso
-                        sTooltip = "2-4";
-                        sType = "Type03";
-                        break;
-                    default:
-                        break;
+                if (Data[i].active) {
+                    switch (true) {
+                        case (Data[i].val == 5): // HOLIDAYS - blu
+                            sTooltip = "5";
+                            sType = "Type08";
+                            break;
+                        case (Data[i].val >= 0 && Data[i].val <= 1): // INATTIVO - viola
+                            sType = "Type10"; // OK
+                            sTooltip = "0-1";
+                            break;
+                        case (Data[i].val >= 8 && Data[i].val <= 10): // ESATTAMENTE 8 - verde
+                            sType = "Type06"; // OK
+                            //sTooltip = Data[i].Task + " " + Data[i].Note;
+                            sTooltip = "8-10";
+                            break;
+                        case (Data[i].val >= 6 && Data[i].val <= 7): // TRA 1 - 7 - verde chiaro
+                            sTooltip = "6-7";
+                            sType = "Type09";
+                            break;
+                        case (Data[i].val >= 2 && Data[i].val <= 4): // Superiore 8 - rosso
+                            sTooltip = "2-4";
+                            sType = "Type03";
+                            break;
+                        default:
+                            break;
+                    }
                 }
                 if (sType !== "") {
                     oCal.addSpecialDate(new DateTypeRange({
@@ -269,8 +326,8 @@ sap.ui.define([
             // 	type: sap.ui.unified.CalendarDayType.Type05
             // }));
         },
-        dialogAfterclose: function (oEvent) { },
-        dialogBeforeclose: function (oEvent) { },
+        dialogAfterclose: function (oEvent) {},
+        dialogBeforeclose: function (oEvent) {},
         confirm: function (oEvent) {
             this._oDialog.close();
         },

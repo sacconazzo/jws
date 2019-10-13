@@ -8,8 +8,10 @@
 	xmlns:rte="sap.ui.richtexteditor">
 	<Page title="{i18n>title} {global>/wstat/header/account}">
 		<headerContent>
-			<Text text="{global>/wstat/header/info}" class="myTitle" />
-			<Button icon="sap-icon://log" tooltip="LogOut" press="logOut" />
+			<Text text="{global>/wstat/header/info}" visible="true" class="myTitle" />
+			<Button icon="sap-icon://log" visible="{global>/online}" tooltip="LogOut" press="logOut" />
+			<Text text="Offline" visible="false" />
+			<Button icon="sap-icon://synchronize" visible="{= !${global>/online}}" tooltip="Refresh" press="onRefresh" />
 		</headerContent>
 		<content>
 			<VBox alignItems="Center">
