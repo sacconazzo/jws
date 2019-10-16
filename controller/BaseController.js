@@ -97,7 +97,6 @@ sap.ui.define([
 			);
 		},
 		onLogIn: function (From) {
-			var that = this;
 			var dialog = new Dialog({
 				title: 'MyDailyNotes',
 				type: 'Message',
@@ -113,8 +112,8 @@ sap.ui.define([
 				],
 				beginButton: new Button({
 					text: 'OK',
-					press: function () {
-						that.onLoginConfirm(dialog, From);
+					press: () => {
+						this.onLoginConfirm(dialog, From);
 					}
 				}),
 				endButton: new Button({
@@ -128,9 +127,9 @@ sap.ui.define([
 				}
 			});
 
-			function checkEnter(evt) {
+			var checkEnter = evt => {
 				if (evt.keyCode == 13) {
-					that.onLoginConfirm(dialog, From);
+					this.onLoginConfirm(dialog, From);
 				}
 			};
 			sap.ui.getCore().byId('Username').attachBrowserEvent("keypress", checkEnter);
@@ -142,15 +141,16 @@ sap.ui.define([
 			var mNote = sap.ui.getCore().byId('Note').getValue();
 			var Del = 0;
 			var detail = null;
-			var that = this;
-			if (Mode == 1) { Del = 1; }
+			if (Mode == 1) {
+				Del = 1;
+			}
 			if (Mode == 2) {
-				detail = function () {
+				detail = () => {
 					Model.setProperty("/detailRTF", Model.oData.detail);
 					Model.setProperty("/detailDB", Object.assign({}, Model.oData.detail));
 					Model.setProperty("/saved");
 					Model.setProperty("/code", false);
-					var oRouter = sap.ui.core.UIComponent.getRouterFor(that);
+					var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 					oRouter.navTo("detail", {
 						day: Model.oData.detail.DATE
 					});
@@ -176,14 +176,13 @@ sap.ui.define([
 				del: Del
 			}
 			let req = JSON.stringify(params);
-			var that = this;
 			http.open('POST', url, true);
 			http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-			http.onreadystatechange = function () {
+			http.onreadystatechange = () => {
 				if (http.readyState == 4) {
 					if (http.status == 200) {
-						if (jQuery.isFunction(that.onSelect)) {
-							that.onSelect(Date);
+						if (jQuery.isFunction(this.onSelect)) {
+							this.onSelect(Date);
 						}
 						if (jQuery.isFunction(Callback)) {
 							Callback();
@@ -194,7 +193,6 @@ sap.ui.define([
 			http.send(req);
 		},
 		onChangeDate: function (Model) {
-			var that = this;
 			var dialog = new Dialog({
 				title: "{/detail/DATE}",
 				type: 'Message',
@@ -221,21 +219,21 @@ sap.ui.define([
 					new Button({
 						//text: 'OK',
 						icon: "sap-icon://accept",
-						press: function () {
-							that.onChangeConfirm(dialog, Model, 0);
+						press: () => {
+							this.onChangeConfirm(dialog, Model, 0);
 						}
 					}),
 					new Button({
 						icon: "sap-icon://edit",
-						press: function () {
-							that.onChangeConfirm(dialog, Model, 2);
+						press: () => {
+							this.onChangeConfirm(dialog, Model, 2);
 						}
 					}),
 					new Button({
 						icon: "sap-icon://delete",
-						press: function () {
-							that.onConfirm("Delete item?", function () {
-								that.onChangeConfirm(dialog, Model, 1);
+						press: () => {
+							this.onConfirm("Delete item?", () => {
+								this.onChangeConfirm(dialog, Model, 1);
 							});
 						}
 					}),
@@ -252,9 +250,9 @@ sap.ui.define([
 				}
 			});
 
-			function checkEnter(evt) {
+			var checkEnter = evt => {
 				if (evt.keyCode == 13) {
-					that.onChangeConfirm(dialog, Model);
+					this.onChangeConfirm(dialog, Model);
 				}
 			};
 			sap.ui.getCore().byId('Valore').attachBrowserEvent("keypress", checkEnter);

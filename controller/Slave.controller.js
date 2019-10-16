@@ -8,9 +8,8 @@ sap.ui.define([
 		onInit: function () {
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			oRouter.getRoute("detail").attachMatched(this.handleRouteMatched, this);
-			var that = this;
 			sap.ui.require(["sap/ui/richtexteditor/RichTextEditor"],
-				function (RTE) {
+				RTE => {
 					var oRichTextEditor = new RTE("myRTE", {
 						editorType: sap.ui.richtexteditor.EditorType.TinyMCE4,
 						width: "100%",
@@ -27,21 +26,21 @@ sap.ui.define([
 						wrapping: false,
 						value: "{global>/detailRTF/note}"
 					});
-					var oLayout = that.getView().byId("idVerticalLayout");
+					var oLayout = this.getView().byId("idVerticalLayout");
 					oLayout.addContent(oRichTextEditor);
 					sap.ui.getCore().applyChanges();
 					oRichTextEditor.addButtonGroup("styleselect").addButtonGroup("table");
-					oRichTextEditor.attachChange(that.checkChange, that);
+					oRichTextEditor.attachChange(this.checkChange, this);
 				});
 			var s, r, t;
 			r = false;
 			s = document.createElement('script');
 			s.src = "tools/tidy.js";
 			s.type = 'text/javascript';
-			s.onload = function () {
+			s.onload = () => {
 				if (!r && (!this.readyState || this.readyState == 'complete')) {
 					r = true;
-					that.beutify();
+					this.beutify();
 				}
 			};
 			t = document.getElementsByTagName('script')[0];
@@ -100,7 +99,7 @@ sap.ui.define([
 			});
 		},
 		handleRouteMatched: function (oEvent) {
-			jQuery.sap.delayedCall(500, this, function () { });
+			jQuery.sap.delayedCall(500, this, function () {});
 			if (oEvent.getParameter("day") === "main") {
 				//this.params();
 			}
@@ -111,7 +110,10 @@ sap.ui.define([
 			var that = this;
 			this.saveDay(rtf.val, rtf.note, rtf.DATE, 0, function () {
 				oModel.setProperty("/detailDB", Object.assign({}, rtf));
-				var now = new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+				var now = new Date().toLocaleTimeString([], {
+					hour: 'numeric',
+					minute: '2-digit'
+				});
 				oModel.setProperty("/saved", now);
 			});
 		}

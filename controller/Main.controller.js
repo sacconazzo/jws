@@ -165,27 +165,26 @@ sap.ui.define([
             let http = new XMLHttpRequest();
             let url = 'https://sacconazzo.altervista.org/api/?fn=get-bethel-stat';
             let params = 'usr=' + mUser + '&token=' + mToken + '' + more;
-            var that = this;
             http.open('POST', url, true);
             http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            http.onreadystatechange = function () {
+            http.onreadystatechange = () => {
                 if (http.readyState == 4) {
-                    $(".loader").fadeOut("slow", function () {
+                    $(".loader").fadeOut("slow", () => {
                         $("#fade").fadeIn("slow");
                     });
                     if (http.status == 200) {
                         //sap.ui.core.UIArea.rerenderControl(that.byId("idStaffing"));
-                        var data = that.setVisible(that.mergeLocal(JSON.parse(http.responseText)), From);
+                        var data = this.setVisible(this.mergeLocal(JSON.parse(http.responseText)), From);
                         oModel.setProperty("/wstat");
                         oModel.setProperty("/wstat", data);
                         //that.getOwnerComponent().setModel(oModel, "global");
                         //oModel.setJSON(http.responseText);
                         //that.byId("idStaffing").setModel(oModel);
                         oTab.setBusy(false);
-                        that.infoCalendar(data);
+                        this.infoCalendar(data);
                         vStart = From;
                         oModel.setProperty("/online", true);
-                        that.setOffline(data);
+                        this.setOffline(data);
                         //that.focusDay(vStart);
                     } else if (http.status == 400) {
                         oTab.setBusy(false);
@@ -197,15 +196,15 @@ sap.ui.define([
                         oModel.setProperty("/online", false);
                         sap.m.MessageToast.show("sei offline");
                         oModel.setProperty("/wstat");
-                        oModel.setProperty("/wstat", that.getOffline());
-                        that.infoCalendar(oModel.getProperty("/wstat"));
+                        oModel.setProperty("/wstat", this.getOffline());
+                        this.infoCalendar(oModel.getProperty("/wstat"));
                         oTab.setBusy(false);
                         vStart = From;
                     } else {
                         oTab.setBusy(false);
                         oModel.setProperty("/wstat");
                         vStart = From;
-                        that.logOut();
+                        this.logOut();
                     }
                 }
             };

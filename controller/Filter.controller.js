@@ -141,7 +141,7 @@ sap.ui.define([
 
         },
         handleRouteMatched: function (oEvent) {
-            jQuery.sap.delayedCall(500, this, function () { });
+            jQuery.sap.delayedCall(500, this, function () {});
             if (oEvent.getParameter("name") === "filter") {
                 var oData = this.getView().getModel().getData();
                 this.onFilter(this.oFormatDate.format(oData.dateFrom), this.oFormatDate.format(oData.dateTo));
@@ -151,7 +151,6 @@ sap.ui.define([
             this.filter(true);
         },
         onChange: function (oEvent) {
-            var that = this;
             clearTimeout(this.delaySearch);
             this.delaySearch = setTimeout(function () {
                 //that.filter(false);
@@ -211,20 +210,19 @@ sap.ui.define([
             let http = new XMLHttpRequest();
             let url = 'https://sacconazzo.altervista.org/api/?fn=get-bethel-stat';
             let params = 'usr=' + mUser + '&token=' + mToken + '' + '&from=' + From + '&to=' + To;
-            var that = this;
             http.open('POST', url, true);
             http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            http.onreadystatechange = function () {
+            http.onreadystatechange = () => {
                 if (http.readyState == 4) {
                     if (http.status == 200) {
                         oModel.setProperty("/filter");
                         oModel.setProperty("/filter", JSON.parse(http.responseText));
-                        that.filter();
+                        this.filter();
                         oTab.setBusy(false);
                     } else {
                         oTab.setBusy(false);
                         oModel.setProperty("/filter");
-                        that.filter();
+                        this.filter();
                     }
                 }
             };
