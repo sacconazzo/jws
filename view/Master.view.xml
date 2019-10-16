@@ -3,7 +3,7 @@
 	xmlns="sap.m" 
 	xmlns:html="http://www.w3.org/1999/xhtml">
 	<html:style>
-<!-- .myTitle {  <!--serviva solo per theme sap_belize -->
+<!-- .myTitle {  
 	color:#666666;
 }    
 .sapMIBar.sapMHeader-CTX {
