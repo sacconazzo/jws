@@ -137,7 +137,7 @@ sap.ui.define([
         },
         setVisible: function (Data, Day) {
             for (var i = 0; i < Data.stats.length; i++) {
-                Data.stats[i].visible = Data.stats[i].active ? (this.getWeek(Day) === this.getWeek(Data.stats[i].DATE)) : false;
+                Data.stats[i].visible = Data.stats[i].active ? (this.getWeek(Day) === this.getWeek(Data.stats[i].DATE) && (Day.substr(0, 4) == Data.stats[i].DATE.substr(0, 4))) : false;
             }
             return Data;
         },
@@ -239,7 +239,6 @@ sap.ui.define([
         },
         setOffline: function (data) {
             var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
-            oStorage.get("wstat");
             oStorage.put("wstat", data);
         },
         getOffline: function () {

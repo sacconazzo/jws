@@ -75,6 +75,7 @@ sap.ui.define([
 			var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
 			oStorage.remove("myUser");
 			oStorage.remove("myToken");
+			oStorage.remove("wstat");
 			oStorage.clear();
 			oStorage.put("myUser", mUser);
 			oStorage.put("myToken", this.SHA256(mPwd));
