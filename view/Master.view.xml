@@ -3,7 +3,7 @@
 	xmlns="sap.m" 
 	xmlns:html="http://www.w3.org/1999/xhtml">
 	<html:style>
-.myTitle {
+<!-- .myTitle {  <!--serviva solo per theme sap_belize -->
 	color:#666666;
 }    
 .sapMIBar.sapMHeader-CTX {
@@ -25,7 +25,7 @@ html.sap-desktop .sapContrast.sapMIBar.sapMFooter-CTX {
 }
 .sapMPageHeader::before {
     border-top-width: 0rem;
-}
+} -->
 /* * * * * * * * * * * * * * * * * * * * * * * * * */ tr[data-mystyle="F79F1F00"] {
     background: #ffee80DD!important;
    /* HOLIDAYS */ } tr[data-mystyle="F79F1F00"] .sapMText, tr[data-mystyle="F79F1F00"] .sapMLabel {
