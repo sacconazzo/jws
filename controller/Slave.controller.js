@@ -71,15 +71,15 @@ sap.ui.define([
 		},
 		checkChange: function (oEvent) {
 			var oModel = this.getOwnerComponent().getModel("global");
-			var that = this;
 			if (oModel.getProperty("/detailRTF").note != oModel.getProperty("/detailDB").note) {
-				that.save();
+				setTimeout(() => {
+					this.save()
+				}, 1000)
 			}
 		},
 		onDelete: function (oEvent) {
-			var that = this;
-			this.onConfirm("Delete item?", function () {
-				that.onExit(1);
+			this.onConfirm("Delete item?", () => {
+				this.onExit(1);
 			});
 		},
 		onCode: function (oEvent) {
@@ -94,8 +94,14 @@ sap.ui.define([
 			var oModel = this.getOwnerComponent().getModel("global");
 			var rtf = oModel.getProperty("/detailRTF");
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			this.saveDay(rtf.val, rtf.note, rtf.DATE, Del, function () {
-				oRouter.navTo("main", true);
+			this.saveDay(rtf.val, rtf.note, rtf.DATE, Del, rtf.updated, http => {
+				if (http.status == 200) {
+					oRouter.navTo("main", true);
+				} else {
+					this.onConfirm("È presente un conflitto di versione, ricaricare il calendario? (Si perderanno queste ultime modifiche)", () =>{
+						oRouter.navTo("main", true);
+					})
+				}
 			});
 		},
 		handleRouteMatched: function (oEvent) {
@@ -107,14 +113,16 @@ sap.ui.define([
 		save: function (oEvent) {
 			var oModel = this.getOwnerComponent().getModel("global");
 			var rtf = oModel.getProperty("/detailRTF");
-			var that = this;
-			this.saveDay(rtf.val, rtf.note, rtf.DATE, 0, function () {
-				oModel.setProperty("/detailDB", Object.assign({}, rtf));
-				var now = new Date().toLocaleTimeString([], {
-					hour: 'numeric',
-					minute: '2-digit'
-				});
-				oModel.setProperty("/saved", now);
+			this.saveDay(rtf.val, rtf.note, rtf.DATE, 0, rtf.updated, http => {
+				if (http.status == 200) {
+					rtf.updated = http.response.replace(/(\r\n|\n|\r)/gm, "");
+					oModel.setProperty("/detailDB", Object.assign({}, rtf));
+					var now = new Date().toLocaleTimeString([], {
+						hour: 'numeric',
+						minute: '2-digit'
+					});
+					oModel.setProperty("/saved", now);
+				}
 			});
 		}
 	});

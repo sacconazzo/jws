@@ -1,8 +1,7 @@
 oApplication = { // Application is an object
 	load: function (src, id, libs, theme, callback) {
-		var that = this;
-		setTimeout(function () {
-			that.loadSAPUI5(src, id, libs, theme, callback);
+		setTimeout(() => {
+			this.loadSAPUI5(src, id, libs, theme, callback);
 		}, 0);
 	},
 	loadSAPUI5: function (src, id, libs, theme, callback) {
@@ -43,7 +42,7 @@ oApplication = { // Application is an object
 				app: new sap.ui.core.ComponentContainer({
 					height: "100%",
 					name: "Wstat",
-					componentCreated: function () { }
+					componentCreated: function () {}
 				})
 			});
 		});

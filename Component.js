@@ -76,15 +76,7 @@ sap.ui.define([
 			// set the i18n model
 			this.setModel(models.createResourceModel(mConfig.i18nBundle), "i18n");
 			// call the base component's init function
-			var headers = {
-				"Access-Control-Allow-Origin": "*"
-			};
 			jQuery.sap.require("jquery.sap.storage");
-			var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
-			var mUser = oStorage.get("myUser");
-			var mToken = oStorage.get("myToken");
-			//sap.m.MessageToast.show(mUser + " - " + mPwd);
-			var sServiceUrl = mConfig.serviceConfig.serviceUrl;
 
 			sap.ui.getCore().getConfiguration().setLanguage("en");
 

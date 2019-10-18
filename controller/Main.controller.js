@@ -125,6 +125,9 @@ sap.ui.define([
                     "val": 1,
                     "note": ""
                 };
+            } else if (!jDetail[0].active) {
+                jDetail[0].val = 1
+                jDetail[0].note = ""
             }
             oModel.setProperty("/detail", Object.assign({}, jDetail[0]));
             //Popup

@@ -146,7 +146,8 @@ sap.ui.define([
 				Del = 1;
 			}
 			if (Mode == 2) {
-				detail = () => {
+				detail = updated => {
+					Model.oData.detail.updated = updated
 					Model.setProperty("/detailRTF", Model.oData.detail);
 					Model.setProperty("/detailDB", Object.assign({}, Model.oData.detail));
 					Model.setProperty("/saved");
@@ -157,10 +158,19 @@ sap.ui.define([
 					});
 				};
 			}
-			this.saveDay(mVal, mNote, Model.oData.detail.DATE, Del, detail);
+			var check = http => {
+				if (http.status == 200) {
+					if (jQuery.isFunction(detail)) {
+						detail(http.response.replace(/(\r\n|\n|\r)/gm, ""))
+					}
+				} else {
+					this.onError("MyDailyNotes", "È presente un conflitto di versione, aggiornare il calendario")
+				}
+			}
+			this.saveDay(mVal, mNote, Model.oData.detail.DATE, Del, Model.oData.detail.updated, check);
 			dialog.close();
 		},
-		saveDay: function (Val, Note, Date, Del, Callback) {
+		saveDay: function (Val, Note, Date, Del, Updated, Callback) {
 			jQuery.sap.require("jquery.sap.storage");
 			var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
 			var mUser = oStorage.get("myUser");
@@ -174,20 +184,21 @@ sap.ui.define([
 				date: Date,
 				val: Val,
 				note: Note,
-				del: Del
+				del: Del,
+				timestamp: Updated
 			}
 			let req = JSON.stringify(params);
 			http.open('POST', url, true);
 			http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 			http.onreadystatechange = () => {
 				if (http.readyState == 4) {
-					if (http.status == 200) {
+					if (http.status == 200) { //accettato
 						if (jQuery.isFunction(this.onSelect)) {
 							this.onSelect(Date);
 						}
-						if (jQuery.isFunction(Callback)) {
-							Callback();
-						}
+						Callback(http)
+					} else if (http.status == 205) { //non accettato, conflitto con salvataggio
+						Callback(http)
 					}
 				}
 			};
