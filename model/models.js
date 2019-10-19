@@ -1,15 +1,14 @@
 sap.ui.define([
 	"sap/ui/model/resource/ResourceModel"
 ], function (ResourceModel) {
-	"use strict";
-
+	"use strict"
 	return {
 		createResourceModel: function (sBundleName) {
 			var oResourceModel = new ResourceModel({
 				"bundleName": sBundleName
-			});
-			return oResourceModel;
+			})
+			return oResourceModel
 		}
 
-	};
-});
+	}
+})

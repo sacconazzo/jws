@@ -7,9 +7,11 @@
 	<Page title="{i18n>title} {global>/detailRTF/DATE}" showNavButton="true" navButtonPress="onBack">
 		<headerContent>
 			<Text text="{global>/saved}" class="myTitle" />
+			<Button icon="sap-icon://delete" tooltip="Delete" press="onDelete" visible="{=!${global>/conflict}}" />
 			<Button icon="sap-icon://syntax" visible="{=${global>/code}}" tooltip="Beautify" press="beutify" />
 			<ToggleButton pressed="{path:'global>/code'}" icon="sap-icon://source-code" tooltip="Code" press="onCode" />
-			<Button icon="sap-icon://delete" tooltip="Delete" press="onDelete" />
+			<Button icon="sap-icon://save" tooltip="Save" press="checkChange" visible="{=!${global>/conflict}}" />
+			<Button icon="sap-icon://alert" tooltip="Conflict" enabled="false" visible="{=${global>/conflict}}" />
 		</headerContent>
 		<l:VerticalLayout visible="{=!${global>/code}}" id="idVerticalLayout" class="sapUiContentPadding" width="100%"></l:VerticalLayout>
 		<l:VerticalLayout visible="{=${global>/code}}" id="idCode" class="sapUiContentPadding" width="100%">

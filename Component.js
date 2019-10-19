@@ -4,7 +4,7 @@ sap.ui.define([
 	"Wstat/model/models",
 	"sap/ui/model/json/JSONModel"
 ], function (UIComponent, Device, models, JSONModel) {
-	"use strict";
+	"use strict"
 	return UIComponent.extend("Wstat.Component", {
 		metadata: {
 			//manifest: "json",
@@ -72,26 +72,26 @@ sap.ui.define([
 		 */
 		init: function () {
 
-			var mConfig = this.getMetadata().getConfig();
+			var mConfig = this.getMetadata().getConfig()
 			// set the i18n model
-			this.setModel(models.createResourceModel(mConfig.i18nBundle), "i18n");
+			this.setModel(models.createResourceModel(mConfig.i18nBundle), "i18n")
 			// call the base component's init function
-			jQuery.sap.require("jquery.sap.storage");
+			jQuery.sap.require("jquery.sap.storage")
 
-			sap.ui.getCore().getConfiguration().setLanguage("en");
+			sap.ui.getCore().getConfiguration().setLanguage("en")
 
-			var oModel = new sap.ui.model.json.JSONModel({});
+			var oModel = new sap.ui.model.json.JSONModel({})
 			//oModel.setSizeLimit(1000);
-			this.setModel(oModel);
+			this.setModel(oModel)
 
-			var oModelJSON = new sap.ui.model.json.JSONModel({});
-			oModelJSON.setSizeLimit(1000);
-			this.setModel(oModelJSON, "global");
+			var oModelJSON = new sap.ui.model.json.JSONModel({})
+			oModelJSON.setSizeLimit(1000)
+			this.setModel(oModelJSON, "global")
 
-			UIComponent.prototype.init.apply(this, arguments);
-			this.getRouter().initialize();
+			UIComponent.prototype.init.apply(this, arguments)
+			this.getRouter().initialize()
 			// create the views based on the url/hash
 
 		}
-	});
-});
+	})
+})

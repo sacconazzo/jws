@@ -11,7 +11,7 @@ sap.ui.define([
     'sap/viz/ui5/format/ChartFormatter',
     'sap/viz/ui5/api/env/Format'
 ], function (BaseController, jQuery, History, Title, JSONModel, FlattenedDataset, FeedItem, Popover, VizFrame, ChartFormatter, Format) {
-    "use strict";
+    "use strict"
     return BaseController.extend("Wstat.controller.Filter", {
         delaySearch: null,
         //dataPath : "https://sapui5.hana.ondemand.com/test-resources/sap/viz/demokit/dataset/milk_production_testing_data/date_cost",
@@ -68,21 +68,21 @@ sap.ui.define([
         oFormatDate: null,
         oChartContainer: null,
         onInit: function () {
-            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-            oRouter.getRoute("filter").attachMatched(this.handleRouteMatched, this);
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this)
+            oRouter.getRoute("filter").attachMatched(this.handleRouteMatched, this)
             this.oFormatDate = sap.ui.core.format.DateFormat.getInstance({
                 pattern: "yyyy-MM-dd",
                 calendarType: sap.ui.core.CalendarType.Gregorian
-            });
-            var today = new Date();
-            var year = today.getFullYear();
+            })
+            var today = new Date()
+            var year = today.getFullYear()
             if (today.getMonth() < 8) {
-                year--;
+                year--
             }
-            var from = new Date(year + "-09-01");
-            var to = new Date(year + 1 + "-08-31");
+            var from = new Date(year + "-09-01")
+            var to = new Date(year + 1 + "-08-31")
 
-            var oModel = new sap.ui.model.json.JSONModel();
+            var oModel = new sap.ui.model.json.JSONModel()
             oModel.setData({
                 delimiter: "|",
                 dateFrom: from,
@@ -90,152 +90,152 @@ sap.ui.define([
                 filter: "",
                 graph: false,
                 stats: [],
-            });
-            this.getView().setModel(oModel);
+            })
+            this.getView().setModel(oModel)
 
             //graph
-            Format.numericFormatter(ChartFormatter.getInstance());
-            var oView = this.getView();
-            var bindValue = this.value;
-            var feedValueAxis, feedTimeAxis, oVizFrame, oDataset, dataModel, titleText, oPopOver;
+            Format.numericFormatter(ChartFormatter.getInstance())
+            var oView = this.getView()
+            var bindValue = this.value
+            var feedValueAxis, feedTimeAxis, oVizFrame, oDataset, dataModel, titleText, oPopOver
             titleText = new Title({
                 'text': bindValue.text
-            });
-            oPopOver = new Popover({});
-            oVizFrame = oView.byId("idChart");
-            oDataset = new FlattenedDataset(bindValue.dataset);
-            oVizFrame.setDataset(oDataset);
-            oVizFrame.setVizType(bindValue.vizType);
-            oVizFrame.setVizProperties(bindValue.vizProperties);
+            })
+            oPopOver = new Popover({})
+            oVizFrame = oView.byId("idChart")
+            oDataset = new FlattenedDataset(bindValue.dataset)
+            oVizFrame.setDataset(oDataset)
+            oVizFrame.setVizType(bindValue.vizType)
+            oVizFrame.setVizProperties(bindValue.vizProperties)
             feedTimeAxis = new FeedItem({
                 'uid': "timeAxis",
                 'type': "Dimension",
                 'values': ["DateChart"]
-            });
+            })
             feedValueAxis = new FeedItem({
                 'uid': "valueAxis",
                 'type': "Measure",
                 'values': ["val"]
-            });
-            oVizFrame.addFeed(feedTimeAxis);
-            oVizFrame.addFeed(feedValueAxis);
-            oPopOver.connect(oVizFrame.getVizUid());
-            oPopOver.setFormatString(ChartFormatter.DefaultPattern.STANDARDFLOAT);
-            jQuery.sap.require("sap/suite/ui/commons/ChartContainer");
+            })
+            oVizFrame.addFeed(feedTimeAxis)
+            oVizFrame.addFeed(feedValueAxis)
+            oPopOver.connect(oVizFrame.getVizUid())
+            oPopOver.setFormatString(ChartFormatter.DefaultPattern.STANDARDFLOAT)
+            jQuery.sap.require("sap/suite/ui/commons/ChartContainer")
             var oChartContainerContent = new sap.suite.ui.commons.ChartContainerContent({
                 icon: "sap-icon://line-chart-time-axis",
                 title: "vizFrame Line Chart Sample",
                 content: [oVizFrame]
-            });
+            })
             this.oChartContainer = new sap.suite.ui.commons.ChartContainer({
                 id: "idChartCont",
                 content: [oChartContainerContent]
-            });
-            this.oChartContainer.setShowFullScreen(true);
+            })
+            this.oChartContainer.setShowFullScreen(true)
             //this.oChartContainer.setAutoAdjustHeight(true);
-            oView.byId("chartFixFlex").setMinFlexSize(parseInt($(window).width() / 1.2));
-            oView.byId('chartFixFlex').setFlexContent(this.oChartContainer);
+            oView.byId("chartFixFlex").setMinFlexSize(parseInt($(window).width() / 1.2))
+            oView.byId('chartFixFlex').setFlexContent(this.oChartContainer)
             $(window).resize(function () {
-                oView.byId("chartFixFlex").setMinFlexSize(parseInt($(window).width() / 1.2));
-            });
+                oView.byId("chartFixFlex").setMinFlexSize(parseInt($(window).width() / 1.2))
+            })
 
         },
         handleRouteMatched: function (oEvent) {
-            jQuery.sap.delayedCall(500, this, function () {});
+            jQuery.sap.delayedCall(500, this, function () {})
             if (oEvent.getParameter("name") === "filter") {
-                var oData = this.getView().getModel().getData();
-                this.onFilter(this.oFormatDate.format(oData.dateFrom), this.oFormatDate.format(oData.dateTo));
+                var oData = this.getView().getModel().getData()
+                this.onFilter(this.oFormatDate.format(oData.dateFrom), this.oFormatDate.format(oData.dateTo))
             }
         },
         onSearch: function (oEvent) {
-            this.filter(true);
+            this.filter(true)
         },
         onChange: function (oEvent) {
-            clearTimeout(this.delaySearch);
+            clearTimeout(this.delaySearch)
             this.delaySearch = setTimeout(function () {
                 //that.filter(false);
-            }, 1);
+            }, 1)
         },
         filter: function (force) {
-            var oModelData = this.getOwnerComponent().getModel("global");
-            var oModelPars = this.getView().getModel();
-            var DataNew = oModelPars.getData();
-            var Data = oModelData.getProperty("/filter");
-            DataNew.stats = [];
-            oModelPars.setData(DataNew);
+            var oModelData = this.getOwnerComponent().getModel("global")
+            var oModelPars = this.getView().getModel()
+            var DataNew = oModelPars.getData()
+            var Data = oModelData.getProperty("/filter")
+            DataNew.stats = []
+            oModelPars.setData(DataNew)
             for (var i = 0; i < Data.stats.length; i++) {
-                var filter = DataNew.filter.split(" ");
+                var filter = DataNew.filter.split(" ")
                 var objEmph = {
                     DATE: Data.stats[i].DATE,
                     note: Data.stats[i].note
-                };
-                var string = (Data.stats[i].ID + Data.stats[i].DATE + Data.stats[i].note.replace(/<\/?[^>]+(>|$)/g, "")).toLowerCase();
+                }
+                var string = (Data.stats[i].ID + Data.stats[i].DATE + Data.stats[i].note.replace(/<\/?[^>]+(>|$)/g, "")).toLowerCase()
                 if (this.multiwords(string, filter, objEmph) || (DataNew.filter.length < 3 && !force)) {
                     DataNew.stats.push({
                         DATE: objEmph.DATE,
                         note: objEmph.note,
                         DateChart: Data.stats[i].DATE.substr(5, 2) + "/" + Data.stats[i].DATE.substr(8, 2) + "/" + Data.stats[i].DATE.substr(0, 4),
                         val: Data.stats[i].val
-                    });
+                    })
                 }
             }
-            oModelPars.setData(DataNew);
-            var oVizFrame = this.getView().byId("idChart");
-            oVizFrame.setModel(oModelPars);
+            oModelPars.setData(DataNew)
+            var oVizFrame = this.getView().byId("idChart")
+            oVizFrame.setModel(oModelPars)
         },
         multiwords: function (string, filter, emph) {
-            var found = true;
+            var found = true
             for (var i = 0; i < filter.length; i++) {
-                var lowFilter = filter[i].toLowerCase();
+                var lowFilter = filter[i].toLowerCase()
                 //while (true) {
                 //part string, find, replace (lenght lowFilter)
                 //}
-                emph.note = emph.note.replace(filter[i], "<strong><span style='background-color: yellow;'>" + filter[i] + "</span></strong>");
+                emph.note = emph.note.replace(filter[i], "<strong><span style='background-color: yellow;'>" + filter[i] + "</span></strong>")
                 if (string.indexOf(lowFilter) == -1) {
-                    found = false;
+                    found = false
                 }
             }
-            return found;
+            return found
         },
         onFilter: function (From, To) {
-            var oTab = this.byId("idStaffing");
-            oTab.setBusy(true);
-            var oRestModel = this.getView().getModel();
-            var oModel = this.getOwnerComponent().getModel("global");
-            var more = "/?fn=get-bethel-stat";
-            jQuery.sap.require("jquery.sap.storage");
-            var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
-            var mUser = oStorage.get("myUser");
-            var mToken = oStorage.get("myToken");
-            let http = new XMLHttpRequest();
-            let url = 'https://sacconazzo.altervista.org/api/?fn=get-bethel-stat';
-            let params = 'usr=' + mUser + '&token=' + mToken + '' + '&from=' + From + '&to=' + To;
-            http.open('POST', url, true);
-            http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            var oTab = this.byId("idStaffing")
+            oTab.setBusy(true)
+            var oRestModel = this.getView().getModel()
+            var oModel = this.getOwnerComponent().getModel("global")
+            var more = "/?fn=get-bethel-stat"
+            jQuery.sap.require("jquery.sap.storage")
+            var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local)
+            var mUser = oStorage.get("myUser")
+            var mToken = oStorage.get("myToken")
+            let http = new XMLHttpRequest()
+            let url = 'https://sacconazzo.altervista.org/api/?fn=get-bethel-stat'
+            let params = 'usr=' + mUser + '&token=' + mToken + '' + '&from=' + From + '&to=' + To
+            http.open('POST', url, true)
+            http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
             http.onreadystatechange = () => {
                 if (http.readyState == 4) {
                     if (http.status == 200) {
-                        oModel.setProperty("/filter");
-                        oModel.setProperty("/filter", JSON.parse(http.responseText));
-                        this.filter();
-                        oTab.setBusy(false);
+                        oModel.setProperty("/filter")
+                        oModel.setProperty("/filter", JSON.parse(http.responseText))
+                        this.filter()
+                        oTab.setBusy(false)
                     } else {
-                        oTab.setBusy(false);
-                        oModel.setProperty("/filter");
-                        this.filter();
+                        oTab.setBusy(false)
+                        oModel.setProperty("/filter")
+                        this.filter()
                     }
                 }
-            };
-            http.send(params);
+            }
+            http.send(params)
         },
         handleChange: function (oEvent) {
-            var sFrom = oEvent.getParameter("from");
-            var sTo = oEvent.getParameter("to");
-            var bValid = oEvent.getParameter("valid");
-            var oEventSource = oEvent.getSource();
+            var sFrom = oEvent.getParameter("from")
+            var sTo = oEvent.getParameter("to")
+            var bValid = oEvent.getParameter("valid")
+            var oEventSource = oEvent.getSource()
             if (bValid) {
-                this.onFilter(this.oFormatDate.format(sFrom), this.oFormatDate.format(sTo));
+                this.onFilter(this.oFormatDate.format(sFrom), this.oFormatDate.format(sTo))
             }
         }
-    });
-});
+    })
+})
