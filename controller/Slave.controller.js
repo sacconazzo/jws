@@ -6,6 +6,7 @@ sap.ui.define([
 	return BaseController.extend("Wstat.controller.Slave", {
 		interval: null,
 		onInit: function () {
+			this.CheckLoad();
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			oRouter.getRoute("detail").attachMatched(this.handleRouteMatched, this);
 			var that = this;
@@ -67,8 +68,10 @@ sap.ui.define([
 			};
 			var oModel = this.getOwnerComponent().getModel("global");
 			var detail = oModel.getProperty("/detailRTF");
-			detail.note = tidy_html5(detail.note, options);
-			oModel.setProperty("/detailRTF", Object.assign({}, detail));
+			if (detail!==undefined) {
+				detail.note = tidy_html5(detail.note, options);
+				oModel.setProperty("/detailRTF", Object.assign({}, detail));
+			}
 		},
 		checkChange: function (oEvent) {
 			var oModel = this.getOwnerComponent().getModel("global");
@@ -88,21 +91,24 @@ sap.ui.define([
 				this.beutify(oEvent);
 			});
 		},
-		onBack: function (oEvent) {
+		onBackS: function (oEvent) {
 			this.onExit(0);
 		},
 		onExit: function (Del) {
 			var oModel = this.getOwnerComponent().getModel("global");
 			var rtf = oModel.getProperty("/detailRTF");
-			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			this.saveDay(rtf.val, rtf.note, rtf.DATE, Del, function () {
-				oRouter.navTo("main", true);
-			});
+			if (rtf!==undefined) {
+				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+				var that = this;
+				this.saveDay(rtf.val, rtf.note, rtf.DATE, Del, function () {
+					that.onBack();
+				});
+			}
 		},
 		handleRouteMatched: function (oEvent) {
 			jQuery.sap.delayedCall(500, this, function () { });
 			if (oEvent.getParameter("day") === "main") {
-				//this.params();
+				this.checkLoading();
 			}
 		},
 		save: function (oEvent) {

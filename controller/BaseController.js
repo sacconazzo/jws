@@ -15,6 +15,16 @@ sap.ui.define([
 		getRouter: function () {
 			return sap.ui.core.UIComponent.getRouterFor(this);
 		},
+		CheckLoad: function () {
+			/* sostituire con caricamento del model */
+			var oData = this.getOwnerComponent().getModel("global").getProperty("/wstat");
+			if (oData==undefined) {
+				var that = this;
+				setTimeout(function () {
+					that.onBack();
+				}, 1);
+			}
+		},
 		onBack: function () {
 			var oHistory = History.getInstance();
 			var sPreviousHash = oHistory.getPreviousHash();

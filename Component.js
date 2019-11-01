@@ -55,7 +55,7 @@ sap.ui.define([
 					"targetAggregation": "pages",
 					"targetControl": "customApp"
 				}, {
-					"pattern": "filter/",
+					"pattern": "filter/:from:/:to:/:string:/",
 					"name": "filter",
 					"view": "Filter",
 					"targetAggregation": "pages",

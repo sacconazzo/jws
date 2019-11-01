@@ -68,6 +68,7 @@ sap.ui.define([
         oFormatDate: null,
         oChartContainer: null,
         onInit: function () {
+            this.CheckLoad();
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("filter").attachMatched(this.handleRouteMatched, this);
             this.oFormatDate = sap.ui.core.format.DateFormat.getInstance({
@@ -138,7 +139,6 @@ sap.ui.define([
             $(window).resize(function () {
                 oView.byId("chartFixFlex").setMinFlexSize(parseInt($(window).width() / 1.2));
             });
-
         },
         handleRouteMatched: function (oEvent) {
             jQuery.sap.delayedCall(500, this, function () { });
@@ -149,6 +149,15 @@ sap.ui.define([
         },
         onSearch: function (oEvent) {
             this.filter(true);
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            var oModelPars = this.getView().getModel();
+            var Data = oModelPars.getData();
+            /* get parameters */
+            oRouter.navTo("filter", {
+                from: "",
+                to: "",
+                string: Data.filter
+            });
         },
         onChange: function (oEvent) {
             var that = this;
@@ -237,6 +246,13 @@ sap.ui.define([
             var oEventSource = oEvent.getSource();
             if (bValid) {
                 this.onFilter(this.oFormatDate.format(sFrom), this.oFormatDate.format(sTo));
+                var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+                /* get parameters */
+                oRouter.navTo("filter", {
+                    from: this.oFormatDate.format(sFrom),
+                    to: this.oFormatDate.format(sTo),
+                    string: ""
+                });
             }
         }
     });

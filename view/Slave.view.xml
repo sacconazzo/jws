@@ -4,7 +4,7 @@
 	xmlns:code="sap.ui.codeeditor" 
 	xmlns="sap.m" 
 	xmlns:core="sap.ui.core" controllerName="Wstat.controller.Slave">
-	<Page title="{i18n>title} {global>/detailRTF/DATE}" showNavButton="true" navButtonPress="onBack">
+	<Page title="{i18n>title} {global>/detailRTF/DATE}" showNavButton="true" navButtonPress="onBackS">
 		<headerContent>
 			<Text text="{global>/saved}" class="myTitle" />
 			<Button icon="sap-icon://syntax" visible="{=${global>/code}}" tooltip="Beautify" press="beutify" />
