@@ -10,8 +10,6 @@
 		<headerContent>
 			<Text text="{global>/wstat/header/info}" visible="true" class="myTitle" />
 			<Button icon="sap-icon://synchronize" visible="true" tooltip="Refresh" press="onRefresh" />
-			<Button icon="sap-icon://log" visible="{global>/online}" tooltip="LogOut" press="logOut" />
-			<Text text="Offline" visible="false" />
 		</headerContent>
 		<content>
 			<VBox alignItems="Center">
@@ -58,8 +56,10 @@
 		</content>
 		<footer>
 			<Toolbar>
+				<Button icon="sap-icon://log" visible="{global>/online}" tooltip="LogOut" press="logOut" />
+				<Text text="Offline" visible="{=!${global>/online}}" />
 				<ToolbarSpacer/>
-				<Button icon="sap-icon://search" press="onFilter" />
+				<Button icon="sap-icon://search" press="onFilter" tooltip="Search" visible="{global>/online}"/>
 			</Toolbar>
 		</footer>
 	</Page>

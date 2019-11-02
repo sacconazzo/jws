@@ -198,7 +198,6 @@ sap.ui.define([
                         vStart = From
                     } else if (http.status == 0) { ///offline mode
                         oModel.setProperty("/online", false)
-                        sap.m.MessageToast.show("sei offline")
                         oModel.setProperty("/wstat")
                         oModel.setProperty("/wstat", this.getOffline())
                         this.infoCalendar(oModel.getProperty("/wstat"))

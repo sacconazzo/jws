@@ -48,8 +48,8 @@
 							<core:CustomData key="mystyle" value="{global>Color}" writeToDom="true"></core:CustomData>
 						</customData>-->
 						<cells>
-							<Text text="{DATE}"/>
-							<core:HTML content="{note}" preferDOM="false" />
+							<Text text="{DATE} {=!${active} ? '␡' : '' }"/>
+							<core:HTML content="{note}" preferDOM="false"/>
 						</cells>
 					</ColumnListItem>
 				</items>

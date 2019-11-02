@@ -151,7 +151,6 @@ sap.ui.define([
             this.filter(true)
         },
         onChange: function (oEvent) {
-            clearTimeout(this.delaySearch)
             this.delaySearch = setTimeout(function () {
                 //that.filter(false);
             }, 1)
@@ -175,7 +174,8 @@ sap.ui.define([
                         DATE: objEmph.DATE,
                         note: objEmph.note,
                         DateChart: Data.stats[i].DATE.substr(5, 2) + "/" + Data.stats[i].DATE.substr(8, 2) + "/" + Data.stats[i].DATE.substr(0, 4),
-                        val: Data.stats[i].val
+                        val: Data.stats[i].val,
+                        active: Data.stats[i].active
                     })
                 }
             }

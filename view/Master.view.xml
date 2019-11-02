@@ -26,6 +26,11 @@ html.sap-desktop .sapContrast.sapMIBar.sapMFooter-CTX {
 .sapMPageHeader::before {
     border-top-width: 0rem;
 } -->
+
+.tableInactive {
+	color: #3236 !important;
+}
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * */ tr[data-mystyle="F79F1F00"] {
     background: #ffee80DD!important;
    /* HOLIDAYS */ } tr[data-mystyle="F79F1F00"] .sapMText, tr[data-mystyle="F79F1F00"] .sapMLabel {

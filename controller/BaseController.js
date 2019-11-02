@@ -25,11 +25,11 @@ sap.ui.define([
 				oRouter.navTo("main", true)
 			}
 		},
-		onError: function (Title, Msg) {
+		onMsg: function (Title, Msg) {
 			var dialog = new Dialog({
 				title: Title,
 				type: "Message",
-				state: "Error",
+				state: "Information",
 				content: new Text({
 					text: Msg
 				}),
@@ -84,10 +84,11 @@ sap.ui.define([
 			this.onSelect(From)
 			//window.location.reload();
 		},
-		onConfirm: function (Msg, Callback) {
+		onConfirm: function (Title, Msg, Callback) {
 			var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length
 			MessageBox.confirm(
 				Msg, {
+					title: Title,
 					onClose: (oAction) => {
 						if (oAction == "OK") {
 							Callback()
@@ -99,7 +100,7 @@ sap.ui.define([
 		},
 		onLogIn: function (From) {
 			var dialog = new Dialog({
-				title: 'MyDailyNotes',
+				title: 'DailyNotes',
 				type: 'Message',
 				content: [
 					new Input("Username", {
@@ -165,7 +166,7 @@ sap.ui.define([
 						detail(http.response.replace(/(\r\n|\n|\r)/gm, ""))
 					}
 				} else {
-					this.onError("MyDailyNotes", "È presente un conflitto di versione.\nAggiornare il calendario")
+					this.onMsg("DailyNotes", "È presente un conflitto di versione.\nAggiornare prima il calendario")
 				}
 			}
 			this.saveDay(mVal, mNote, Model.oData.detail.DATE, Del, Model.oData.detail.updated, check)
@@ -245,7 +246,7 @@ sap.ui.define([
 					new Button({
 						icon: "sap-icon://delete",
 						press: () => {
-							this.onConfirm("Delete item?", () => {
+							this.onConfirm("DailyNotes", "Delete item?", () => {
 								this.onChangeConfirm(dialog, Model, 1)
 							})
 						}

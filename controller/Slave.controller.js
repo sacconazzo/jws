@@ -76,7 +76,7 @@ sap.ui.define([
 			}
 		},
 		onDelete: function (oEvent) {
-			this.onConfirm("Delete item?", () => {
+			this.onConfirm("DailyNotes", "Delete item?", () => {
 				this.onExit(1)
 			})
 		},
@@ -96,7 +96,7 @@ sap.ui.define([
 				if (http.status == 200) {
 					oRouter.navTo("main", true)
 				} else {
-					this.onConfirm("È presente un conflitto di versione. Ricaricare il calendario?\n(Si perderanno queste ultime modifiche)", () => {
+					this.onConfirm("DailyNotes", "È presente un conflitto di versione. Ricaricare il calendario?\n(Si perderanno queste ultime modifiche)", () => {
 						oRouter.navTo("main", true)
 					})
 				}
