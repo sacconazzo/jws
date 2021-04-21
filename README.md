@@ -1,3 +1,3 @@
 # jws web application
 
-https://giona.tech/jws
+https://jws.giona.tech
