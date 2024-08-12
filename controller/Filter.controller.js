@@ -151,6 +151,7 @@ sap.ui.define([
             this.filter(true)
         },
         onChange: function (oEvent) {
+            clearTimeout(this.delaySearch)
             this.delaySearch = setTimeout(function () {
                 //that.filter(false);
             }, 1)
