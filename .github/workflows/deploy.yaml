@@ -23,4 +23,4 @@ jobs:
         uses: google-github-actions/setup-gcloud@v1
 
       - name: Deploy to Google Cloud Storage
-        run: gsutil -m rsync -r -x '.*,gh*' gs://${{ vars.BUCKET_NAME }}
+        run: gsutil -m rsync -d -x '.*,gh*' gs://${{ vars.BUCKET_NAME }} .
